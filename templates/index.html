@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Comparison</title>
+</head>
+<body>
+    <h1>Compare Numbers</h1>
+    <input type="text" id="numbersInput" placeholder="Enter numbers separated by commas">
+    <button onclick="compareNumbers()">Compare</button>
+
+    <p id="result"></p>
+
+    <script>
+        function compareNumbers() {
+            const numbersInput = document.getElementById("numbersInput").value;
+            const numbersArray = numbersInput.split(',').map(Number);
+            fetch('http://localhost:5000/compare', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ numbers: numbersArray })
+})
+
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").textContent = "Largest number: " + data.max_number;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
